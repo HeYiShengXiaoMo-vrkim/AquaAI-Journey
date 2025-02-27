@@ -11,7 +11,7 @@ import numpy as np
 np.random.seed(1)  # 为了结果的可复现性
 x = 2 * np.random.rand(100, 1)  # 生成100个随机数，范围在0-2之间,x是输入特征，一列一百行
 y = 4 + 3 * x + np.random.randn(100, 1)  # y是输出特征，目标变量
-X_b = np.c_[np.ones((100, 1)), x]  # 在x前面添加一列全为1的列，用于计算截距项
+X_b = np.c_[np.ones((100, 1)), x]  # 在x前面添加一列全为1的列，用于计算截距项,手动进行计算都需要添加列向量.
 
 #  创建超参数
 t0, t1 = 5, 500  # t0是学习率，t1是学习率衰减因子
@@ -22,7 +22,7 @@ def learning_schedule(t):
     return t0 / (t + t1)
 
 #  1. 初始化theta, w0...wn, 正态分布创建W
-theta = np.random.randn(2, 1)
+theta = np.random.randn(2, 1) # 两行一列的数据，包括常数项的部分
 
 #  4. 判断是否收敛，一般不会去设置阈值，而是直接采用设置相对大的迭代次数保证可以收敛
 for i in range(n_iterations):
