@@ -27,17 +27,25 @@ plt.scatter(X, y, color='b', alpha=0.5, label='Data points')
 d = {1: ('g-', 'Linear'), 2: ('r-', 'Quadratic'), 10: ('y-', '10th degree')}
 
 for degree, (color, label) in d.items():
-
+    # 多项式特征生成器（核心升维组件）
+    # degree：指定生成多项式的最高次数，例如degree=2会生成X和X²
+    # include_bias=False：不生成全1的偏置项，因为LinearRegression自带截距
     poly_features = PolynomialFeatures(degree=degree, include_bias=False)  # include_bias=False表示不添加常数项，degree表示多项式的次数
+    # 训练集升维处理（核心步骤）
+    # fit_transform：1. 学习特征组合方式 2. 应用转换到训练数据
+    # 生成的特征矩阵包含原始特征及其多项式组合（如X, X², X³...）
     X_poly_train = poly_features.fit_transform(X_train)  # 将训练集数据升维
+    # 测试集升维处理（保持与训练集相同的转换方式）
+    # 注意：这里使用transform而不是fit_transform，避免数据泄露
     X_poly_test = poly_features.transform(X_test)  # 用与训练数据相同的方式转换测试数据
 
+    # 线性回归模型（在升维后的特征空间进行线性拟合）
     lin_reg = LinearRegression()   # 线性回归
-    lin_reg.fit(X_poly_train, y_train)  # 训练模型
+    lin_reg.fit(X_poly_train, y_train)  # 训练升维后的特征矩阵
 
     X_plot = np.linspace(-3, 3, 100).reshape(-1, 1)  # 生成测试数据
-    X_plot_poly = poly_features.transform(X_plot)  # 将测试数据升维
-    y_plot = lin_reg.predict(X_plot_poly)  # 预测测试数据
+    X_plot_poly = poly_features.transform(X_plot)
+    y_plot = lin_reg.predict(X_plot_poly)
 
     plt.plot(X_plot, y_plot, color, label=f'{label} (degree={degree})')  # 制图，label代表图例
 
