@@ -36,38 +36,33 @@ def loss_function(sample_features, sample_labels, w1, w2):
         result += loss_result
     return result
 
-theta1_space = np.linspace(theta1-0.6, theta1+0.6, num=100)
-theta2_space = np.linspace(theta2-0.6, theta2+0.6, num=100)
+theta1_space = np.linspace(theta1-0.6, theta1+0.6, num=50) # 创建一个一维数组
+theta2_space = np.linspace(theta2-0.6, theta2+0.6, num=50)
 
-result1_ = np.array([loss_function(x, y, i, theta2) for i in theta1_space])
+result1_ = np.array([loss_function(x, y, i, theta2) for i in theta1_space]) # 遍历theta1的范围，得到全部的loss
 result2_ = np.array([loss_function(x, y, theta1, i) for i in theta2_space])
 
-fig1 = plt.figure(figsize=(8, 8))
+fig1 = plt.figure(figsize=(8, 6))
 plt.subplot(2,2,1)
-plt.plot(theta1_space, result1_, 'b-', label='theta1')
+plt.plot(theta1_space, result1_, 'b-', label='theta1') # 图片最低点就是theta1的最佳取值点
 
 plt.subplot(2,2,2)
-plt.plot(theta2_space, result2_, 'g-', label='theta2')
+plt.plot(theta2_space, result2_, 'g-', label='theta2') # 同理
 
 plt.subplot(2,2,3)
-theta1_grid, theta2_grid = np.meshgrid(theta1_space, theta2_space)
+theta1_grid, theta2_grid = np.meshgrid(theta1_space, theta2_space) # 两个维度,一个是w1,另一个是w2,mesh混淆,grid网格
 loss_grid = loss_function(x, y, theta1_grid, theta2_grid)
 plt.contour(theta1_grid, theta2_grid, loss_grid, colors='b')
 
 plt.subplot(2,2,4)
-plt.contour(theta1_grid, theta2_grid, loss_grid, colors='b')
+plt.contour(theta1_grid, theta2_grid, loss_grid, 30, colors='b') # 最中心的点对应的坐标就是最优解的坐标
 plt.xlabel('theta1')
-plt.ylabel('theta2')
+plt.ylabel('theta2') #
 plt.savefig('loss_theta.png')
 
-fig2 = plt.figure(figsize=(10,10))
+fig2 = plt.figure()
 ax = Axes3D(fig2)
-surf = ax.plot_surface(theta1_grid, theta2_grid, loss_grid, cmap='rainbow', rstride=1, cstride=1)
-ax.view_init(elev=30, azim=-60)  # 设置俯视角度
-fig2.colorbar(surf)  # 添加颜色条
-ax.set_xlabel('theta1')
-ax.set_ylabel('theta2')
-ax.set_zlabel('Loss')
+ax.plot_surface(theta1_grid, theta2_grid, loss_grid)
 plt.savefig('loss.png')
 
 plt.show()
