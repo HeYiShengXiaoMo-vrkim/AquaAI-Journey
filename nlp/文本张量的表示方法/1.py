@@ -22,7 +22,7 @@ for tokens in vocab:
     zero_list = [0] * len(vocab)
     # 使用映射器将转化现有文本数据,每个词汇对应从1开始的自然数
     # 返回样式如: [[2]], 取出其中的数字需要使用[0][0] - 1
-    token_index = tokenizer.texts_to_sequences([tokens])[0][0] - 1
+    token_index = tokenizer.texts_to_sequences([tokens])[0][0] - 1 # 修正索引值,从0开始
     zero_list[token_index] = 1
     print(f"{tokens}的one-hot编码为:{zero_list}")
 
