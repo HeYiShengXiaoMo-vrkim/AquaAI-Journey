@@ -26,3 +26,7 @@ y_proba = binary_classifier.predict_proba(x_new)  # 预测概率值
 print(y_proba)  # 输出类别概率（非山鸢尾 vs 山鸢尾）
 y_hat = binary_classifier.predict(x_new)
 print(y_hat) # 输出预测类别
+
+
+## 实现多分类
+## log_reg = LogisticRegression(C=1000, multi_class='ovr', solver='sag', max_iter=1000)
